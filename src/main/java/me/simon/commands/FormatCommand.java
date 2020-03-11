@@ -26,16 +26,16 @@ public class FormatCommand {
                 .executes(FormatCommand::disableFormatting));
 
         dispatcher.register(CommandManager.literal("setheader")
-                .then(CommandManager.argument("text", greedyString()))
+                .then(CommandManager.argument("text", greedyString())
                 .requires(source -> source.hasPermissionLevel(1))
                 .executes(FormatCommand::setHeader)
-        );
+        ));
 
         dispatcher.register(CommandManager.literal("setfooter")
-                .then(CommandManager.argument("text", greedyString()))
+                .then(CommandManager.argument("text", greedyString())
                 .requires(source -> source.hasPermissionLevel(1))
                 .executes(FormatCommand::setFooter)
-        );
+                ));
     }
 
     private static int setHeader(CommandContext<ServerCommandSource> ctx){
