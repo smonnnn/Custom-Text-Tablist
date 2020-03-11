@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "me.simon.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": ["colorchat.LiteralTextMixin", "colorchat.TranslatableTextMixin", "colorchat.PlayerManagerMixin", "colorchat.PlayerListMixin"],
+  "client": [],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
