@@ -36,6 +36,8 @@ public class Config {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             Config config = gson.fromJson(reader, Config.class);
             this.enableColor = config.enableColor;
+            this.header = config.header;
+            this.footer = config.footer;
             if(config.configVersion != this.configVersion){
                 config1.delete();
                 this.load();
