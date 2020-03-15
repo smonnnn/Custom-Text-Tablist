@@ -1,4 +1,4 @@
-package me.simon.mixins.colorchat;
+package me.simon.mixins;
 
 import me.simon.commands.util.TextFormatter;
 import net.minecraft.text.BaseText;

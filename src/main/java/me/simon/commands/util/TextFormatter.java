@@ -21,6 +21,8 @@ public class TextFormatter {
         for(int i = 0; i < markers.length - 1; i++){
             output = output.concat(getFormattedPart(text, markers[i], markers[i + 1]));
         }
+
+
         return output;
     }
 
@@ -31,18 +33,12 @@ public class TextFormatter {
 
     private String setParagraphs(String string){
         StringBuilder builder = new StringBuilder(string);
-        for(int i = 0; i < builder.length() - 2; i++){
-            if(string.charAt(i) == '\\'){
-                if(builder.charAt(i + 1) == '&'){
-                    if(builder.charAt(Math.max(0, i - 1)) != '\\'){
-                        builder.deleteCharAt(i);
+        for(int i = 0; i < builder.length(); i++){
+            if(builder.charAt(i) == '&'){
+                if(i == 0 || builder.charAt(i-1) != '\\'){
+                    if(i != builder.length() - 1 && matches(builder.charAt(i+1))){
+                        builder.setCharAt(i, '§');
                     }
-                }
-                i = i + 3;
-            }
-            else if(builder.charAt(i) == '&'){
-                if(matches(builder.charAt(i+1))){
-                    builder.setCharAt(i, '§');
                 }
             }
         }

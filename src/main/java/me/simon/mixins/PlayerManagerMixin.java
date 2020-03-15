@@ -1,4 +1,4 @@
-package me.simon.mixins.colorchat;
+package me.simon.mixins;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.Packet;

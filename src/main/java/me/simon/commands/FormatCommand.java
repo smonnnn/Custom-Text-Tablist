@@ -2,13 +2,14 @@ package me.simon.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.simon.Main;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.*;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
 
 
 import java.io.IOException;
@@ -39,6 +40,37 @@ public class FormatCommand {
                 .requires(source -> source.hasPermissionLevel(1))
                 .executes(FormatCommand::setFooter)
                 ));
+
+        dispatcher.register(CommandManager.literal("displayitem")
+                .executes(FormatCommand::displayItem)
+        );
+
+        dispatcher.register(CommandManager.literal("cleartablist")
+                .requires(source->source.hasPermissionLevel(1))
+                .executes(FormatCommand::clearTablist)
+        );
+    }
+
+    private static int clearTablist(CommandContext<ServerCommandSource> ctx) {
+        Main.settings.header = "";
+        Main.settings.footer = "";
+        try {
+            Main.settings.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
+        private static int displayItem(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
+        ItemStack itemStack = ctx.getSource().getPlayer().getStackInHand(Hand.MAIN_HAND);
+        if(itemStack == ItemStack.EMPTY){
+            ctx.getSource().sendFeedback(new LiteralText("You're currently not holding anything!").formatted(Formatting.RED), false);
+        }
+        else{
+            Text hoverText = ctx.getSource().getDisplayName().append(" wants to show you their ").append(itemStack.toHoverableText());
+            ctx.getSource().getMinecraftServer().getPlayerManager().sendToAll(hoverText);
+        }
+        return 1;
     }
 
     private static int setHeader(CommandContext<ServerCommandSource> ctx){
@@ -48,7 +80,7 @@ public class FormatCommand {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ctx.getSource().sendFeedback(new LiteralText("&aHeader set."), false);
+        ctx.getSource().sendFeedback(new LiteralText("Header set.").formatted(Formatting.GREEN), false);
         return 1;
     }
 
@@ -59,7 +91,7 @@ public class FormatCommand {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ctx.getSource().sendFeedback(new LiteralText("&aFooter set."), false);
+        ctx.getSource().sendFeedback(new LiteralText("Footer set.").formatted(Formatting.GREEN), false);
         return 1;
     }
 
@@ -70,7 +102,7 @@ public class FormatCommand {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ctx.getSource().sendFeedback(new LiteralText("&aText formatting is now enabled."), true);
+        ctx.getSource().sendFeedback(new LiteralText("Text formatting is now enabled.").formatted(Formatting.GREEN), true);
         return 1;
     }
     private static int disableFormatting(CommandContext<ServerCommandSource> ctx) {
@@ -80,7 +112,7 @@ public class FormatCommand {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ctx.getSource().sendFeedback(new LiteralText("&cText formatting is now disabled."), true);
+        ctx.getSource().sendFeedback(new LiteralText("Text formatting is now disabled.").formatted(Formatting.RED), true);
         return 1;
     }
 

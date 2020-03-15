@@ -1,4 +1,4 @@
-package me.simon.mixins.colorchat;
+package me.simon.mixins;
 
 import me.simon.Main;
 import me.simon.commands.util.TextFormatter;

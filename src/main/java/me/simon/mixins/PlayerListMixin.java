@@ -1,4 +1,4 @@
-package me.simon.mixins.colorchat;
+package me.simon.mixins;
 
 import me.simon.Main;
 import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;

@@ -2,7 +2,7 @@
   "required": true,
   "package": "me.simon.mixins",
   "compatibilityLevel": "JAVA_8",
-  "mixins": ["colorchat.LiteralTextMixin", "colorchat.TranslatableTextMixin", "colorchat.PlayerManagerMixin", "colorchat.PlayerListMixin"],
+  "mixins": ["LiteralTextMixin", "TranslatableTextMixin", "PlayerManagerMixin", "PlayerListMixin"],
   "client": [],
   "server": [],
   "injectors": {
