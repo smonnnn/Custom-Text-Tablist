@@ -1,4 +1,5 @@
 Text & Tablist
+
 Give your server your own twist with this mod. 
 
 With the commands /setheader and /setfooter you can set the header and footer of your tablist.
