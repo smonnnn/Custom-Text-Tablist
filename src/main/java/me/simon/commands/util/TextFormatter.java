@@ -48,4 +48,10 @@ public class TextFormatter {
     private boolean matches(Character c){
         return "b0931825467adcfeklmnor".contains(c.toString());
     }
+
+    public static String tablistChars(String string){
+       String output;
+       output = string.replaceAll("#TPS", Long.toString(TickCounter.getTps()));
+       return output;
+    }
 }

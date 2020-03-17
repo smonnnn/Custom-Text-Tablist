@@ -11,6 +11,7 @@ public class Config {
     public String header = "&cTest &6Header";
     public String footer = "&6Test &cFooter";
     public boolean enableColor = true;
+    public boolean enableTablistFormatting = true;
 
     public void save() throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -38,6 +39,7 @@ public class Config {
             this.enableColor = config.enableColor;
             this.header = config.header;
             this.footer = config.footer;
+            this.enableTablistFormatting = config.enableTablistFormatting;
             if(config.configVersion != this.configVersion){
                 config1.delete();
                 this.load();

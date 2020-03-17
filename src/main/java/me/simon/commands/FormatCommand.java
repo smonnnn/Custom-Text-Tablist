@@ -5,12 +5,12 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.simon.Main;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-
 
 import java.io.IOException;
 
@@ -21,13 +21,9 @@ public class FormatCommand {
         dispatcher.register(CommandManager.literal("format")
                 .executes(FormatCommand::formatCommand));
 
-        dispatcher.register(CommandManager.literal("enableformatting")
+        dispatcher.register(CommandManager.literal("toggleformatting")
                 .requires(source -> source.hasPermissionLevel(1))
-                .executes(FormatCommand::enableFormatting));
-
-        dispatcher.register(CommandManager.literal("disableformatting")
-                .requires(source -> source.hasPermissionLevel(1))
-                .executes(FormatCommand::disableFormatting));
+                .executes(FormatCommand::toggleformatting));
 
         dispatcher.register(CommandManager.literal("setheader")
                 .then(CommandManager.argument("text", greedyString())
@@ -45,13 +41,20 @@ public class FormatCommand {
                 .executes(FormatCommand::displayItem)
         );
 
-        dispatcher.register(CommandManager.literal("cleartablist")
+        dispatcher.register(CommandManager.literal("toggletablist")
                 .requires(source->source.hasPermissionLevel(1))
-                .executes(FormatCommand::clearTablist)
+                .executes(FormatCommand::toggleTablist)
         );
     }
 
-    private static int clearTablist(CommandContext<ServerCommandSource> ctx) {
+    private static int toggleTablist(CommandContext<ServerCommandSource> ctx) {
+        clearTablist(ctx);
+        ctx.getSource().sendFeedback(new LiteralText("Toggled tablist updates").formatted(Formatting.GREEN), true);
+        Main.settings.enableTablistFormatting = !Main.settings.enableTablistFormatting;
+        return 1;
+    }
+
+    private static void clearTablist(CommandContext<ServerCommandSource> ctx) {
         Main.settings.header = "";
         Main.settings.footer = "";
         try {
@@ -59,8 +62,8 @@ public class FormatCommand {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return 1;
-    }
+        ctx.getSource().getMinecraftServer().getPlayerManager().sendToAll(new PlayerListHeaderS2CPacket());
+        }
         private static int displayItem(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
         ItemStack itemStack = ctx.getSource().getPlayer().getStackInHand(Hand.MAIN_HAND);
         if(itemStack == ItemStack.EMPTY){
@@ -95,24 +98,14 @@ public class FormatCommand {
         return 1;
     }
 
-    private static int enableFormatting(CommandContext<ServerCommandSource> ctx) {
-        Main.settings.enableColor = true;
+    private static int toggleformatting(CommandContext<ServerCommandSource> ctx) {
+        Main.settings.enableColor = !Main.settings.enableColor;
         try {
             Main.settings.save();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ctx.getSource().sendFeedback(new LiteralText("Text formatting is now enabled.").formatted(Formatting.GREEN), true);
-        return 1;
-    }
-    private static int disableFormatting(CommandContext<ServerCommandSource> ctx) {
-        Main.settings.enableColor = false;
-        try {
-            Main.settings.save();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        ctx.getSource().sendFeedback(new LiteralText("Text formatting is now disabled.").formatted(Formatting.RED), true);
+        ctx.getSource().sendFeedback(new LiteralText("Toggled text formatting").formatted(Formatting.GREEN), true);
         return 1;
     }
 

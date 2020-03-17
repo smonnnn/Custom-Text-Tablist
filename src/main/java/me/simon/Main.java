@@ -1,8 +1,10 @@
 package me.simon;
 
 import me.simon.commands.*;
+import me.simon.commands.util.TickCounter;
 import me.simon.config.Config;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.server.ServerTickCallback;
 import net.fabricmc.fabric.api.registry.CommandRegistry;
 
 import java.io.IOException;
@@ -22,5 +24,6 @@ public class Main implements ModInitializer {
             e.printStackTrace();
         }
         CommandRegistry.INSTANCE.register(false, FormatCommand::register);
+        ServerTickCallback.EVENT.register(TickCounter::onTick);
     }
 }
