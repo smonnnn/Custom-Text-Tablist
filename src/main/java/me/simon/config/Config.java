@@ -10,6 +10,7 @@ public class Config {
 
     public String header = "&cTest &6Header";
     public String footer = "&6Test &cFooter";
+    public String motd = "";
     public boolean enableColor = true;
     public boolean enableTablistFormatting = true;
 
@@ -39,6 +40,7 @@ public class Config {
             this.enableColor = config.enableColor;
             this.header = config.header;
             this.footer = config.footer;
+            this.motd = config.motd;
             this.enableTablistFormatting = config.enableTablistFormatting;
             if(config.configVersion != this.configVersion){
                 config1.delete();

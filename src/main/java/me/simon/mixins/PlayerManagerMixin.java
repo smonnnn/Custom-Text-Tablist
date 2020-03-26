@@ -1,10 +1,14 @@
 package me.simon.mixins;
 
 import io.netty.buffer.ByteBuf;
+import me.simon.Main;
+import net.minecraft.network.ClientConnection;
+import net.minecraft.network.MessageType;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;
 import net.minecraft.server.PlayerManager;
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,5 +23,10 @@ public abstract class PlayerManagerMixin {
     @Inject(at= @At("HEAD"), method = "updatePlayerLatency")
     public void updatePlayerLatency(CallbackInfo ci) {
         this.sendToAll(new PlayerListHeaderS2CPacket());
+    }
+
+    @Inject(at=@At("TAIL"), method = "onPlayerConnect")
+    public void onPlayerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
+        player.sendChatMessage(new LiteralText(Main.settings.motd), MessageType.CHAT);
     }
 }

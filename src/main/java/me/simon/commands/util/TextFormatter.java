@@ -51,7 +51,8 @@ public class TextFormatter {
 
     public static String tablistChars(String string){
        String output;
-       output = string.replaceAll("#TPS", Long.toString(TickCounter.getTps()));
-       return output;
+       output = string.replaceAll("#TPS", Double.toString(TickCounter.getTps()));
+        output = output.replaceAll("#MSPT", Double.toString(TickCounter.getMspt()));
+        return output;
     }
 }

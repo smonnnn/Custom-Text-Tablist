@@ -27,14 +27,14 @@ public class FormatCommand {
 
         dispatcher.register(CommandManager.literal("setheader")
                 .then(CommandManager.argument("text", greedyString())
-                .requires(source -> source.hasPermissionLevel(1))
-                .executes(FormatCommand::setHeader)
-        ));
+                        .requires(source -> source.hasPermissionLevel(1))
+                        .executes(FormatCommand::setHeader)
+                ));
 
         dispatcher.register(CommandManager.literal("setfooter")
                 .then(CommandManager.argument("text", greedyString())
-                .requires(source -> source.hasPermissionLevel(1))
-                .executes(FormatCommand::setFooter)
+                                .requires(source -> source.hasPermissionLevel(1))
+                        .executes(FormatCommand::setFooter)
                 ));
 
         dispatcher.register(CommandManager.literal("displayitem")
@@ -45,9 +45,26 @@ public class FormatCommand {
                 .requires(source->source.hasPermissionLevel(1))
                 .executes(FormatCommand::toggleTablist)
         );
+
+        dispatcher.register(CommandManager.literal("setmotd")
+                .then(CommandManager.argument("text", greedyString())
+                        .requires(source->source.hasPermissionLevel(1))
+                        .executes(FormatCommand::setMotd)
+                ));
     }
 
-    private static int toggleTablist(CommandContext<ServerCommandSource> ctx) {
+    private static int setMotd(CommandContext<ServerCommandSource> ctx) {
+        Main.settings.motd = getString(ctx, "text");
+        try {
+            Main.settings.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ctx.getSource().sendFeedback(new LiteralText("set motd"), false);
+        return 1;
+    }
+
+        private static int toggleTablist(CommandContext<ServerCommandSource> ctx) {
         clearTablist(ctx);
         ctx.getSource().sendFeedback(new LiteralText("Toggled tablist updates").formatted(Formatting.GREEN), true);
         Main.settings.enableTablistFormatting = !Main.settings.enableTablistFormatting;
