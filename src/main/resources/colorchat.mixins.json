@@ -2,7 +2,7 @@
   "required": true,
   "package": "me.simon.mixins",
   "compatibilityLevel": "JAVA_8",
-  "mixins": ["LiteralTextMixin", "TranslatableTextMixin", "PlayerManagerMixin", "PlayerListMixin"],
+  "mixins": [ "LiteralTextMixin", "TranslatableTextMixin","PlayerManagerMixin", "PlayerListMixin"],
   "client": [],
   "server": [],
   "injectors": {

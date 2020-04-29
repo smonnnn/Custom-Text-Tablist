@@ -87,7 +87,9 @@ public class FormatCommand {
             ctx.getSource().sendFeedback(new LiteralText("You're currently not holding anything!").formatted(Formatting.RED), false);
         }
         else{
-            Text hoverText = ctx.getSource().getDisplayName().append(" wants to show you their ").append(itemStack.toHoverableText());
+            BaseText nametxt = (BaseText) ctx.getSource().getDisplayName();
+            MutableText hoverText =nametxt.append(" wants to show you their ").append(itemStack.toHoverableText());
+            //
             ctx.getSource().getMinecraftServer().getPlayerManager().sendToAll(hoverText);
         }
         return 1;

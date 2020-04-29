@@ -1,6 +1,7 @@
 package me.simon;
 
 import me.simon.commands.*;
+import me.simon.commands.util.TextFormatter;
 import me.simon.commands.util.TickCounter;
 import me.simon.config.Config;
 import net.fabricmc.api.ModInitializer;
@@ -15,6 +16,7 @@ public class Main implements ModInitializer {
     public static final String MOD_ID = "colorchat";
     public static final String MOD_NAME = "colorchat";
     public static Config settings = new Config();
+    public static TextFormatter TF = new TextFormatter();
 
     @Override
     public void onInitialize() {
