@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LiteralText.class)
-public abstract class LiteralTextMixin {
+public abstract class LiteralTextMixin { //removed BaseText - again this causes a crash
 
     @Mutable
     @Final
@@ -22,7 +22,7 @@ public abstract class LiteralTextMixin {
     public void LiteralText(String string, CallbackInfo ci) {
 
         if (Main.settings.enableColor) {
-            this.string = Main.TF.formatString(string);
+            this.string = Main.TF.formatString(string);//call the static reference in Main, instead of creating one in the mixin - prevents a crash
         } else {
             this.string = string;
         }

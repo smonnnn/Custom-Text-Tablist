@@ -16,7 +16,7 @@ public class Main implements ModInitializer {
     public static final String MOD_ID = "colorchat";
     public static final String MOD_NAME = "colorchat";
     public static Config settings = new Config();
-    public static TextFormatter TF = new TextFormatter();
+    public static TextFormatter TF = new TextFormatter();//Referencing a public class in main and then calling it in mixins prevents crashing
 
     @Override
     public void onInitialize() {
