@@ -17,7 +17,8 @@ import java.io.IOException;
 import static com.mojang.brigadier.arguments.StringArgumentType.*;
 
 public class FormatCommand {
-    public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
+
+    public static void register(CommandDispatcher<ServerCommandSource> dispatcher,  boolean b) {
         dispatcher.register(CommandManager.literal("format")
                 .executes(FormatCommand::formatCommand));
 
@@ -158,4 +159,6 @@ public class FormatCommand {
                 , false);
         return 1;
     }
+
+
 }

@@ -3,6 +3,7 @@ package me.simon.mixins;
 import me.simon.Main;
 import me.simon.commands.util.TextFormatter;
 import me.simon.commands.util.TickCounter;
+
 import net.minecraft.text.BaseText;
 import net.minecraft.text.LiteralText;
 import org.spongepowered.asm.mixin.*;
