@@ -19,9 +19,7 @@ public class PlayerListMixin {
 
     @Inject(at= @At("RETURN"), method = "<init>")
     public void PlayerListHeaderS2CPacket(CallbackInfo ci) {
-        if(Main.settings.enableTablistFormatting) {
-            this.footer = new LiteralText(TextFormatter.tablistChars(Main.settings.footer));
-            this.header = new LiteralText(TextFormatter.tablistChars(Main.settings.header));
-        }
+        this.footer = new LiteralText(TextFormatter.tablistChars(Main.settings.footer));
+        this.header = new LiteralText(TextFormatter.tablistChars(Main.settings.header));
     }
 }

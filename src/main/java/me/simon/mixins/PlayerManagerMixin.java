@@ -22,7 +22,9 @@ public abstract class PlayerManagerMixin {
 
     @Inject(at= @At("HEAD"), method = "updatePlayerLatency")
     public void updatePlayerLatency(CallbackInfo ci) {
-        this.sendToAll(new PlayerListHeaderS2CPacket());
+        if(Main.settings.enableTablistFormatting) {
+            this.sendToAll(new PlayerListHeaderS2CPacket());
+        }
     }
 
     @Inject(at=@At("TAIL"), method = "onPlayerConnect")
