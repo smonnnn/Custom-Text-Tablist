@@ -1,9 +1,12 @@
 package me.simon;
 
 import me.simon.commands.*;
+
+import me.simon.commands.util.TextFormatter;
 import me.simon.commands.util.TickCounter;
 import me.simon.config.Config;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.server.ServerTickCallback;
 import net.fabricmc.fabric.api.registry.CommandRegistry;
 
@@ -15,6 +18,7 @@ public class Main implements ModInitializer {
     public static final String MOD_ID = "colorchat";
     public static final String MOD_NAME = "colorchat";
     public static Config settings = new Config();
+    public static TextFormatter TF = new TextFormatter();//Referencing a public class in main and then calling it in mixins prevents crashing
 
     @Override
     public void onInitialize() {
@@ -23,7 +27,8 @@ public class Main implements ModInitializer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        CommandRegistry.INSTANCE.register(false, FormatCommand::register);
+
+        CommandRegistrationCallback.EVENT.register(FormatCommand::register);
         ServerTickCallback.EVENT.register(TickCounter::onTick);
     }
 }
