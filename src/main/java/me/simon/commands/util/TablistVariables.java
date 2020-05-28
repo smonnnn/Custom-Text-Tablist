@@ -7,9 +7,11 @@ import java.lang.management.ManagementFactory;
 public class TablistVariables {
     private static int mspt = 1;
     private static int tps = 1;
+    private static int playerCount = 0;
 
 
     public static void onTick(MinecraftServer minecraftServer){
+        playerCount = minecraftServer.getCurrentPlayerCount();
         mspt = (int) minecraftServer.getTickTime();
         if(mspt != 0) {
             tps = 1000 / mspt;
@@ -21,6 +23,9 @@ public class TablistVariables {
     }
     public static int getTps(){
         return Math.min(tps, 20);
+    }
+    public static int getPlayerCount(){
+        return playerCount;
     }
     public static String getUptime() {
         String s = "";
@@ -44,4 +49,6 @@ public class TablistVariables {
         s = s + (seconds < 10 ? "0" : "") + seconds;
         return s;
     }
+
+
 }

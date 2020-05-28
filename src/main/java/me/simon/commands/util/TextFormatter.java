@@ -54,6 +54,7 @@ public class TextFormatter {
         output = string.replaceAll("#TPS", Double.toString(TablistVariables.getTps()));
         output = output.replaceAll("#MSPT", Double.toString(TablistVariables.getMspt()));
         output = output.replaceAll("#UPTIME", TablistVariables.getUptime());
+        output = output.replaceAll("#PLAYERCOUNT", Integer.toString(TablistVariables.getPlayerCount()));
         return output;
     }
 }
