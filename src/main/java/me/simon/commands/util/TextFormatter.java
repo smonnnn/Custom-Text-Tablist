@@ -50,9 +50,10 @@ public class TextFormatter {
     }
 
     public static String tablistChars(String string){
-       String output;
-       output = string.replaceAll("#TPS", Double.toString(TickCounter.getTps()));
-        output = output.replaceAll("#MSPT", Double.toString(TickCounter.getMspt()));
+        String output;
+        output = string.replaceAll("#TPS", Double.toString(TablistVariables.getTps()));
+        output = output.replaceAll("#MSPT", Double.toString(TablistVariables.getMspt()));
+        output = output.replaceAll("#UPTIME", TablistVariables.getUptime());
         return output;
     }
 }

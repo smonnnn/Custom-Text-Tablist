@@ -3,12 +3,11 @@ package me.simon;
 import me.simon.commands.*;
 
 import me.simon.commands.util.TextFormatter;
-import me.simon.commands.util.TickCounter;
+import me.simon.commands.util.TablistVariables;
 import me.simon.config.Config;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.server.ServerTickCallback;
-import net.fabricmc.fabric.api.registry.CommandRegistry;
 
 import java.io.IOException;
 
@@ -29,6 +28,6 @@ public class Main implements ModInitializer {
         }
 
         CommandRegistrationCallback.EVENT.register(FormatCommand::register);
-        ServerTickCallback.EVENT.register(TickCounter::onTick);
+        ServerTickCallback.EVENT.register(TablistVariables::onTick);
     }
 }
