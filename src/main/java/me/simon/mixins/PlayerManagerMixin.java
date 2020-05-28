@@ -29,6 +29,6 @@ public abstract class PlayerManagerMixin {
 
     @Inject(at=@At("TAIL"), method = "onPlayerConnect")
     public void onPlayerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
-        player.sendMessage(new LiteralText(Main.settings.motd), MessageType.CHAT);
+        player.sendMessage(new LiteralText(Main.settings.motd));
     }
 }

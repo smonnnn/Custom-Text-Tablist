@@ -1,7 +1,5 @@
 package me.simon.mixins;
 
-import me.simon.commands.util.TextFormatter;
-import net.minecraft.text.BaseText;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -13,8 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(TranslatableText.class)
 public abstract class TranslatableTextMixin  {//removed BaseText - again this causes a crash
-
-
     protected TranslatableTextMixin(String key, Object[] args) {
         this.key = key;
         this.args = args;
@@ -39,7 +35,6 @@ public abstract class TranslatableTextMixin  {//removed BaseText - again this ca
                 } else if (object == null) {
                     this.args[i] = "null";
                 }
-                int x = 10;
             }
     }
     @Mutable
