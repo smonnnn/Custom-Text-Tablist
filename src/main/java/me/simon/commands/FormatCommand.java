@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.simon.Main;
+import me.simon.commands.util.SuggestionsProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;
 import net.minecraft.server.command.CommandManager;
@@ -28,6 +29,7 @@ public class FormatCommand {
 
         dispatcher.register(CommandManager.literal("setheader")
                 .then(CommandManager.argument("text", greedyString())
+                        .suggests(SuggestionsProvider.headerFooterSuggestions())
                         .requires(source -> source.hasPermissionLevel(1))
                         .executes(FormatCommand::setHeader)
                 ));
