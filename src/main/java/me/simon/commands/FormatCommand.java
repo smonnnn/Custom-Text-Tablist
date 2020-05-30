@@ -36,7 +36,8 @@ public class FormatCommand {
 
         dispatcher.register(CommandManager.literal("setfooter")
                 .then(CommandManager.argument("text", greedyString())
-                                .requires(source -> source.hasPermissionLevel(1))
+                        .suggests(SuggestionsProvider.headerFooterSuggestions())
+                        .requires(source -> source.hasPermissionLevel(1))
                         .executes(FormatCommand::setFooter)
                 ));
 
