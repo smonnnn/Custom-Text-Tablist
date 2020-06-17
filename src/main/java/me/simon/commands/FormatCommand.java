@@ -19,7 +19,7 @@ import java.io.IOException;
 import static com.mojang.brigadier.arguments.StringArgumentType.*;
 
 public class FormatCommand {
-
+    static Config config = Config.INSTANCE;
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher,  boolean b) {
         dispatcher.register(CommandManager.literal("format")
                 .executes(FormatCommand::formatCommand));
@@ -59,9 +59,9 @@ public class FormatCommand {
     }
 
     private static int setMotd(CommandContext<ServerCommandSource> ctx) {
-        Config.INSTANCE.motd = getString(ctx, "text");
+        config.motd = getString(ctx, "text");
         try {
-            Config.INSTANCE.save();
+            config.save();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,15 +72,15 @@ public class FormatCommand {
         private static int toggleTablist(CommandContext<ServerCommandSource> ctx) {
         clearTablist(ctx);
         ctx.getSource().sendFeedback(new LiteralText("Toggled tablist updates").formatted(Formatting.GREEN), true);
-        Config.INSTANCE.enableTablistFormatting = !Config.INSTANCE.enableTablistFormatting;
+        config.enableTablistFormatting = !config.enableTablistFormatting;
         return 1;
     }
 
     private static void clearTablist(CommandContext<ServerCommandSource> ctx) {
-        Config.INSTANCE.header = "";
-        Config.INSTANCE.footer = "";
+        config.header = "";
+        config.footer = "";
         try {
-            Config.INSTANCE.save();
+            config.save();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -101,9 +101,9 @@ public class FormatCommand {
     }
 
     private static int setHeader(CommandContext<ServerCommandSource> ctx){
-        Config.INSTANCE.header = getString(ctx, "text");
+        config.header = getString(ctx, "text");
         try {
-            Config.INSTANCE.save();
+            config.save();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -112,9 +112,9 @@ public class FormatCommand {
     }
 
     private static int setFooter(CommandContext<ServerCommandSource> ctx){
-        Config.INSTANCE.footer = getString(ctx, "text");
+        config.footer = getString(ctx, "text");
         try {
-            Config.INSTANCE.save();
+            config.save();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -123,9 +123,9 @@ public class FormatCommand {
     }
 
     private static int toggleformatting(CommandContext<ServerCommandSource> ctx) {
-        Config.INSTANCE.enableColor = !Config.INSTANCE.enableColor;
+        config.enableColor = !config.enableColor;
         try {
-            Config.INSTANCE.save();
+            config.save();
         } catch (IOException e) {
             e.printStackTrace();
         }

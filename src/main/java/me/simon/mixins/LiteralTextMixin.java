@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LiteralText.class)
-public abstract class LiteralTextMixin { //removed BaseText - again this causes a crash
+public abstract class LiteralTextMixin {
 
     @Mutable
     @Final
@@ -24,6 +24,4 @@ public abstract class LiteralTextMixin { //removed BaseText - again this causes 
             this.string = string;
         }
     }
-
-
 }

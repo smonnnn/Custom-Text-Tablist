@@ -12,20 +12,18 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(TranslatableText.class)
-public abstract class TranslatableTextMixin  {//removed BaseText - again this causes a crash
+public abstract class TranslatableTextMixin  {
     protected TranslatableTextMixin(String key, Object[] args) {
         this.key = key;
         this.args = args;
     }
 
-
-
-    @Inject(method = "<init>(Ljava/lang/String;[Ljava/lang/Object;)V", at = @At("RETURN"))//Without "(Ljava/lang/String;[Ljava/lang/Object;)V" the void would not be able to use all the variables
+    @Inject(method = "<init>(Ljava/lang/String;[Ljava/lang/Object;)V", at = @At("RETURN"))
     public void TranslatableText(String key, Object[] args, CallbackInfo ci) {
         this.key = key;
         this.args = args;
 
-        if(Config.INSTANCE.enableColor && !key.startsWith("chat.type.advancement")) {
+        if(Config.INSTANCE.enableColor && !key.startsWith("chat.type.advancement") && !key.startsWith("commands.datapack")) {
             for (int i = 0; i < args.length; ++i) {
                 Object object = args[i];
                 if (object instanceof String) {
@@ -33,13 +31,13 @@ public abstract class TranslatableTextMixin  {//removed BaseText - again this ca
                 } else if (object instanceof Text) {
                     Text text = ((Text) object).copy();
                     this.args[i] = text;
-                    //text.getStyle().setParent(this.getStyle()); //I just removed this. It's seemed useless, I might be wrong about that, but that being said removing it allows the mod to compile and run
                 } else if (object == null) {
                        this.args[i] = "null";
                 }
             }
         }
     }
+
     @Mutable
     @Final
     @Shadow
