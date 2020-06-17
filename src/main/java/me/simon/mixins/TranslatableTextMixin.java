@@ -23,7 +23,7 @@ public abstract class TranslatableTextMixin  {
         this.key = key;
         this.args = args;
 
-        if(Config.INSTANCE.enableColor && !key.startsWith("chat.type.advancement") && !key.startsWith("commands.datapack")) {
+        if(Config.INSTANCE.enableColor && !key.startsWith("chat.type.advancement") && !key.startsWith("commands")) {
             for (int i = 0; i < args.length; ++i) {
                 Object object = args[i];
                 if (object instanceof String) {
