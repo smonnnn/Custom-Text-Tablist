@@ -1,6 +1,8 @@
 package me.simon.commands.util;
 
 public class TextFormatter {
+    public static TextFormatter INSTANCE = new TextFormatter();
+
     public String formatString(String text){
         String output = "";
         char[] textArray = text.toCharArray();

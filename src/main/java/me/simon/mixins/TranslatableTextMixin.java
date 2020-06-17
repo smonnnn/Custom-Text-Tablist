@@ -1,6 +1,7 @@
 package me.simon.mixins;
 
 import me.simon.Main;
+import me.simon.config.Config;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -24,7 +25,7 @@ public abstract class TranslatableTextMixin  {//removed BaseText - again this ca
         this.key = key;
         this.args = args;
 
-        if(Main.settings.enableColor && !key.startsWith("chat.type.advancement")) {
+        if(Config.INSTANCE.enableColor && !key.startsWith("chat.type.advancement")) {
             for (int i = 0; i < args.length; ++i) {
                 Object object = args[i];
                 if (object instanceof String) {

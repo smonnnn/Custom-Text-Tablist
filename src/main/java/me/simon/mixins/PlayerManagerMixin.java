@@ -2,6 +2,7 @@ package me.simon.mixins;
 
 import io.netty.buffer.ByteBuf;
 import me.simon.Main;
+import me.simon.config.Config;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.MessageType;
 import net.minecraft.network.Packet;
@@ -22,13 +23,13 @@ public abstract class PlayerManagerMixin {
 
     @Inject(at= @At("HEAD"), method = "updatePlayerLatency")
     public void updatePlayerLatency(CallbackInfo ci) {
-        if(Main.settings.enableTablistFormatting) {
+        if(Config.INSTANCE.enableTablistFormatting) {
             this.sendToAll(new PlayerListHeaderS2CPacket());
         }
     }
 
     @Inject(at=@At("TAIL"), method = "onPlayerConnect")
     public void onPlayerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
-        player.sendMessage(new LiteralText(Main.settings.motd));
+        if(!Config.INSTANCE.motd.isEmpty()) player.sendMessage(new LiteralText(Config.INSTANCE.motd));
     }
 }

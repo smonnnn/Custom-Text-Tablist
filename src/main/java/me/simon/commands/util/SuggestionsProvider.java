@@ -4,6 +4,7 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import me.simon.Main;
+import me.simon.config.Config;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.util.Arrays;
@@ -13,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class SuggestionsProvider {
     public static SuggestionProvider<ServerCommandSource> headerFooterSuggestions() {
-        return (ctx, builder) -> getSuggestionsBuilder(builder, Arrays.asList(Main.settings.footer, Main.settings.header));
+        return (ctx, builder) -> getSuggestionsBuilder(builder, Arrays.asList(Config.INSTANCE.footer, Config.INSTANCE.header));
     }
 
     public static CompletableFuture<Suggestions> getSuggestionsBuilder(SuggestionsBuilder builder, List<String> list) {

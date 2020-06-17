@@ -5,6 +5,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.simon.Main;
 import me.simon.commands.util.SuggestionsProvider;
+import me.simon.config.Config;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;
 import net.minecraft.server.command.CommandManager;
@@ -58,9 +59,9 @@ public class FormatCommand {
     }
 
     private static int setMotd(CommandContext<ServerCommandSource> ctx) {
-        Main.settings.motd = getString(ctx, "text");
+        Config.INSTANCE.motd = getString(ctx, "text");
         try {
-            Main.settings.save();
+            Config.INSTANCE.save();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -71,15 +72,15 @@ public class FormatCommand {
         private static int toggleTablist(CommandContext<ServerCommandSource> ctx) {
         clearTablist(ctx);
         ctx.getSource().sendFeedback(new LiteralText("Toggled tablist updates").formatted(Formatting.GREEN), true);
-        Main.settings.enableTablistFormatting = !Main.settings.enableTablistFormatting;
+        Config.INSTANCE.enableTablistFormatting = !Config.INSTANCE.enableTablistFormatting;
         return 1;
     }
 
     private static void clearTablist(CommandContext<ServerCommandSource> ctx) {
-        Main.settings.header = "";
-        Main.settings.footer = "";
+        Config.INSTANCE.header = "";
+        Config.INSTANCE.footer = "";
         try {
-            Main.settings.save();
+            Config.INSTANCE.save();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -100,9 +101,9 @@ public class FormatCommand {
     }
 
     private static int setHeader(CommandContext<ServerCommandSource> ctx){
-        Main.settings.header = getString(ctx, "text");
+        Config.INSTANCE.header = getString(ctx, "text");
         try {
-            Main.settings.save();
+            Config.INSTANCE.save();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -111,9 +112,9 @@ public class FormatCommand {
     }
 
     private static int setFooter(CommandContext<ServerCommandSource> ctx){
-        Main.settings.footer = getString(ctx, "text");
+        Config.INSTANCE.footer = getString(ctx, "text");
         try {
-            Main.settings.save();
+            Config.INSTANCE.save();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -122,9 +123,9 @@ public class FormatCommand {
     }
 
     private static int toggleformatting(CommandContext<ServerCommandSource> ctx) {
-        Main.settings.enableColor = !Main.settings.enableColor;
+        Config.INSTANCE.enableColor = !Config.INSTANCE.enableColor;
         try {
-            Main.settings.save();
+            Config.INSTANCE.save();
         } catch (IOException e) {
             e.printStackTrace();
         }
