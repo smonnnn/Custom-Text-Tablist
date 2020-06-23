@@ -9,24 +9,19 @@ import org.apache.commons.logging.Log;
 import java.io.*;
 
 public class Config {
-
-    public static File configdir = FabricLoader.getInstance().getConfigDirectory();//repurposed code from PVP opt-in - Ill pretty this up later. My main focus is functionality
-    public static File colorFile = new File(configdir.getPath(), "color.json");//Idk why but at least in the IDE it would not generate the config directory unless this code was present
-
-    public short configVersion = 1;
-
+    public static Config INSTANCE = new Config();
+    public int configVersion = 1;
     public String header = "&cTest &6Header";
     public String footer = "&6Test &cFooter";
     public String motd = "";
     public boolean enableColor = true;
     public boolean enableTablistFormatting = true;
 
-
-
     public void save() throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File config = new File("config/color.json");
         if(!config.exists()){
+            config.mkdirs();
             config.createNewFile();
         }
         try (FileWriter file = new FileWriter("config/color.json")) {

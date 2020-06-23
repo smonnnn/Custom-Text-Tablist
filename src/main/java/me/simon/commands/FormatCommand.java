@@ -4,6 +4,8 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.simon.Main;
+import me.simon.commands.util.SuggestionsProvider;
+import me.simon.config.Config;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;
 import net.minecraft.server.command.CommandManager;
@@ -17,7 +19,7 @@ import java.io.IOException;
 import static com.mojang.brigadier.arguments.StringArgumentType.*;
 
 public class FormatCommand {
-
+    static Config config = Config.INSTANCE;
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher,  boolean b) {
         dispatcher.register(CommandManager.literal("format")
                 .executes(FormatCommand::formatCommand));
@@ -28,13 +30,15 @@ public class FormatCommand {
 
         dispatcher.register(CommandManager.literal("setheader")
                 .then(CommandManager.argument("text", greedyString())
+                        .suggests(SuggestionsProvider.headerFooterSuggestions())
                         .requires(source -> source.hasPermissionLevel(1))
                         .executes(FormatCommand::setHeader)
                 ));
 
         dispatcher.register(CommandManager.literal("setfooter")
                 .then(CommandManager.argument("text", greedyString())
-                                .requires(source -> source.hasPermissionLevel(1))
+                        .suggests(SuggestionsProvider.headerFooterSuggestions())
+                        .requires(source -> source.hasPermissionLevel(1))
                         .executes(FormatCommand::setFooter)
                 ));
 
@@ -55,9 +59,9 @@ public class FormatCommand {
     }
 
     private static int setMotd(CommandContext<ServerCommandSource> ctx) {
-        Main.settings.motd = getString(ctx, "text");
+        config.motd = getString(ctx, "text");
         try {
-            Main.settings.save();
+            config.save();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,15 +72,15 @@ public class FormatCommand {
         private static int toggleTablist(CommandContext<ServerCommandSource> ctx) {
         clearTablist(ctx);
         ctx.getSource().sendFeedback(new LiteralText("Toggled tablist updates").formatted(Formatting.GREEN), true);
-        Main.settings.enableTablistFormatting = !Main.settings.enableTablistFormatting;
+        config.enableTablistFormatting = !config.enableTablistFormatting;
         return 1;
     }
 
     private static void clearTablist(CommandContext<ServerCommandSource> ctx) {
-        Main.settings.header = "";
-        Main.settings.footer = "";
+        config.header = "";
+        config.footer = "";
         try {
-            Main.settings.save();
+            config.save();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -88,18 +92,18 @@ public class FormatCommand {
             ctx.getSource().sendFeedback(new LiteralText("You're currently not holding anything!").formatted(Formatting.RED), false);
         }
         else{
-            BaseText nametxt = (BaseText) ctx.getSource().getDisplayName();
-            MutableText hoverText =nametxt.append(" wants to show you their ").append(itemStack.toHoverableText());
-            //
+            MutableText nametxt = ctx.getSource().getDisplayName().copy();
+            Text hoverText = nametxt.append(" wants to show you their ").append(itemStack.toHoverableText());
+
             ctx.getSource().getMinecraftServer().getPlayerManager().getPlayerList().forEach(player->player.sendMessage(hoverText, false));
         }
         return 1;
     }
 
     private static int setHeader(CommandContext<ServerCommandSource> ctx){
-        Main.settings.header = getString(ctx, "text");
+        config.header = getString(ctx, "text");
         try {
-            Main.settings.save();
+            config.save();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -108,9 +112,9 @@ public class FormatCommand {
     }
 
     private static int setFooter(CommandContext<ServerCommandSource> ctx){
-        Main.settings.footer = getString(ctx, "text");
+        config.footer = getString(ctx, "text");
         try {
-            Main.settings.save();
+            config.save();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -119,9 +123,9 @@ public class FormatCommand {
     }
 
     private static int toggleformatting(CommandContext<ServerCommandSource> ctx) {
-        Main.settings.enableColor = !Main.settings.enableColor;
+        config.enableColor = !config.enableColor;
         try {
-            Main.settings.save();
+            config.save();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -129,33 +133,38 @@ public class FormatCommand {
         return 1;
     }
 
-        private static int formatCommand(CommandContext<ServerCommandSource> ctx){
+    private static int formatCommand(CommandContext<ServerCommandSource> ctx){
         ctx.getSource().sendFeedback(
                 new LiteralText("")
-                .append("Use the \"&\" character following one of the formatting codes for your message to be formatted.\n Use the \"\\\" character to escape format codes.\n")
-                .append("0 is &0black&f, ")
-                .append("1 is &1dark blue&f, ")
-                .append("2 is &2dark green&f, ")
-                .append("3 is &3dark aqua&f, \n")
-                .append("4 is &4dark red&f, ")
-                .append("5 is &5dark purple&f, ")
-                .append("8 is &8dark gray&f\n")
-                .append("----------------------------------------------------\n")
-                .append("6 is &6gold&f, ")
-                .append("7 is &7gray&f, ")
-                .append("9 is &9blue&f, ")
-                .append("a is &agreen&f, ")
-                .append("b is &baqua&f, ")
-                .append("c is &cred&f, \n")
-                .append("d is &dlight purple&f, ")
-                .append("e is &eyellow&f, ")
-                .append("f is &fwhite&f\n")
-                .append("----------------------------------------------------\n")
-                .append("k is &kobfuscated&f, ")
-                .append("l is &lbold&f, ")
-                .append("m is &mstrikethrough&f, ")
-                .append("n is &nunderline&f, \n")
-                .append("o is &oitalic&f, ")
+                        .append("Use the \"&\" character following one of the formatting codes for your message to be formatted.\n Use the \"\\\" character to escape format codes.\n")
+                        .append("0 is &0black&f\n")
+                        .append("1 is &1dark blue&f\n")
+                        .append("2 is &2dark green&f\n")
+                        .append("3 is &3dark aqua&f\n")
+                        .append("4 is &4dark red&f\n")
+                        .append("5 is &5dark purple&f\n")
+                        .append("6 is &6gold&f\n")
+                        .append("7 is &7gray&f\n")
+                        .append("8 is &8dark gray&f\n")
+                        .append("9 is &9blue&f\n")
+                        .append("a is &agreen&f\n")
+                        .append("b is &baqua&f\n")
+                        .append("c is &cred&f\n")
+                        .append("d is &dlight purple&f\n")
+                        .append("e is &eyellow&f\n")
+                        .append("f is &fwhite&f\n")
+                        .append("----------------------------------------------------\n")
+                        .append("k is &kobfuscated&f\n")
+                        .append("l is &lbold&f\n")
+                        .append("m is &mstrikethrough&f\n")
+                        .append("n is &nunderline&f\n")
+                        .append("o is &oitalic&f\n")
+                        .append("----------------------------------------------------\n")
+                        .append("n is #N next line\n")
+                        .append("n is #UPTIME show uptime\n")
+                        .append("n is #TPS show ticks per second\n")
+                        .append("n is #MSPT next line\n")
+                        .append("n is #PLAYERCOUNT show how many players are online\n")
                 , false);
         return 1;
     }

@@ -2,6 +2,7 @@ package me.simon.mixins;
 
 import me.simon.Main;
 import me.simon.commands.util.TextFormatter;
+import me.simon.config.Config;
 import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -19,7 +20,7 @@ public class PlayerListMixin {
 
     @Inject(at= @At("RETURN"), method = "<init>")
     public void PlayerListHeaderS2CPacket(CallbackInfo ci) {
-        this.footer = new LiteralText(TextFormatter.tablistChars(Main.settings.footer));
-        this.header = new LiteralText(TextFormatter.tablistChars(Main.settings.header));
+        this.footer = new LiteralText(TextFormatter.tablistChars(Config.INSTANCE.footer));
+        this.header = new LiteralText(TextFormatter.tablistChars(Config.INSTANCE.header));
     }
 }
