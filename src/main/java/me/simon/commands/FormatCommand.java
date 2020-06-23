@@ -91,7 +91,7 @@ public class FormatCommand {
             BaseText nametxt = (BaseText) ctx.getSource().getDisplayName();
             MutableText hoverText =nametxt.append(" wants to show you their ").append(itemStack.toHoverableText());
             //
-            ctx.getSource().getMinecraftServer().getPlayerManager().sendToAll(hoverText);
+            ctx.getSource().getMinecraftServer().getPlayerManager().getPlayerList().forEach(player->player.sendMessage(hoverText, false));
         }
         return 1;
     }
