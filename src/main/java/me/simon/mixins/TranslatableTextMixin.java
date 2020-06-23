@@ -29,7 +29,7 @@ public abstract class TranslatableTextMixin  {
                 if (object instanceof String) {
                     this.args[i] = new LiteralText((String) object);
                 } else if (object instanceof Text) {
-                    Text text = ((Text) object).copy();
+                    Text text = ((Text) object).deepCopy(); //see if copy or deepcopy are better
                     this.args[i] = text;
                 } else if (object == null) {
                        this.args[i] = "null";
