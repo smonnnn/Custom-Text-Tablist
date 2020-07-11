@@ -3,8 +3,6 @@ package me.simon.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
-import org.apache.commons.logging.Log;
-
 
 import java.io.*;
 
@@ -19,26 +17,25 @@ public class Config {
 
     public void save() throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File config = new File("config/color.json");
-        if(!config.exists()){
-            config.mkdirs();
-            config.createNewFile();
-        }
-        try (FileWriter file = new FileWriter("config/color.json")) {
+        File config = new File(FabricLoader.getInstance().getConfigDirectory(), "color.json");
+        try (FileWriter file = new FileWriter(config)) {
             file.write(gson.toJson(this));
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
     public void load() throws IOException{
-        File config1 = new File("config/color.json");
+        File config1 = new File(FabricLoader.getInstance().getConfigDirectory(), "color.json");
         if(!config1.exists()){
             this.save();
+            return;
         }
-        FileReader reader;
-        try {
-            reader = new FileReader("config/color.json");
+        if (config1.isDirectory()) {
+            if (config1.delete()) {
+                this.save();
+                return;
+            }
+        }
+        try (FileReader reader = new FileReader(config1)) {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             Config config = gson.fromJson(reader, Config.class);
             this.enableColor = config.enableColor;
@@ -47,10 +44,8 @@ public class Config {
             this.motd = config.motd;
             this.enableTablistFormatting = config.enableTablistFormatting;
             if(config.configVersion != this.configVersion){
-                config1.delete();
-                this.load();
+                this.save();
             }
-            this.save();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
