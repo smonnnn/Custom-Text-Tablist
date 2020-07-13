@@ -1,10 +1,8 @@
 package me.simon.mixins;
 
-import io.netty.buffer.ByteBuf;
-import me.simon.Main;
+import me.simon.commands.util.TextFormatter;
 import me.simon.config.Config;
 import net.minecraft.network.ClientConnection;
-import net.minecraft.network.MessageType;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;
 import net.minecraft.server.PlayerManager;
@@ -24,7 +22,11 @@ public abstract class PlayerManagerMixin {
     @Inject(at= @At("HEAD"), method = "updatePlayerLatency")
     public void updatePlayerLatency(CallbackInfo ci) {
         if(Config.INSTANCE.enableTablistFormatting) {
-            this.sendToAll(new PlayerListHeaderS2CPacket());
+            @SuppressWarnings("ConstantConditions")
+            PlayerListMixin packet = (PlayerListMixin) new PlayerListHeaderS2CPacket();
+            packet.setFooter(new LiteralText(TextFormatter.tablistChars(Config.INSTANCE.footer)));
+            packet.setHeader(new LiteralText(TextFormatter.tablistChars(Config.INSTANCE.header)));
+            this.sendToAll(packet);
         }
     }
 
