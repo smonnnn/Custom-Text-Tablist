@@ -93,7 +93,7 @@ public class FormatCommand {
         }
         else{
             MutableText nametxt = ctx.getSource().getDisplayName().shallowCopy();
-            Text hoverText = nametxt.append(" wants to show you their ").append(itemStack.toHoverableText());
+            Text hoverText = nametxt.append(new LiteralText(" wants to show you their ").formatted(Formatting.YELLOW)).append(itemStack.toHoverableText());
 
             ctx.getSource().getMinecraftServer().getPlayerManager().getPlayerList().forEach(player->player.sendMessage(hoverText, false));
         }
