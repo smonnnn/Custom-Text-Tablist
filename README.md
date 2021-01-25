@@ -6,6 +6,8 @@
 
 A Fabric mod that lets you customize the player list (tab list)
 
+There is a version with chat commands and one without if you want to use a config file only.
+
 The config file is located in the config directory (`config/color.json`) and looks like this:
 
 ```JSON
