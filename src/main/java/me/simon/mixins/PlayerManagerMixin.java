@@ -23,9 +23,10 @@ public abstract class PlayerManagerMixin {
     public void updatePlayerLatency(CallbackInfo ci) {
         if(Config.INSTANCE.enableTablistFormatting) {
             @SuppressWarnings("ConstantConditions")
-            PlayerListMixin packet = (PlayerListMixin) new PlayerListHeaderS2CPacket();
-            packet.setFooter(new LiteralText(TextFormatter.tablistChars(Config.INSTANCE.footer)));
-            packet.setHeader(new LiteralText(TextFormatter.tablistChars(Config.INSTANCE.header)));
+            PlayerListMixin packet = (PlayerListMixin) new PlayerListHeaderS2CPacket(
+                new LiteralText(TextFormatter.tablistChars(Config.INSTANCE.header)),
+                new LiteralText(TextFormatter.tablistChars(Config.INSTANCE.footer))
+            );
             this.sendToAll(packet);
         }
     }
