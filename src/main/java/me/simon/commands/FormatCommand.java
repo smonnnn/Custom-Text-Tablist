@@ -7,6 +7,7 @@ import me.simon.Main;
 import me.simon.commands.util.SuggestionsProvider;
 import me.simon.config.Config;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -84,7 +85,7 @@ public class FormatCommand {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ctx.getSource().getMinecraftServer().getPlayerManager().sendToAll(new PlayerListHeaderS2CPacket());
+        ctx.getSource().getMinecraftServer().getPlayerManager().sendToAll(new PlayerListHeaderS2CPacket(new LiteralText(""), new LiteralText("")));
         }
         private static int displayItem(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
         ItemStack itemStack = ctx.getSource().getPlayer().getStackInHand(Hand.MAIN_HAND);
